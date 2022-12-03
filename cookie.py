@@ -1,6 +1,7 @@
 # Importing
 import pygame
 import time
+import math
  
 # initiatizing
 pygame.init()
@@ -8,7 +9,7 @@ pygame.init()
 """ screen = pygame.display.set_mode() # Default to screen resolution.
 area = screen.get_rect()
 print(area) """
-screen = pygame.display.set_mode()
+screen = pygame.display.set_mode((800,800))
 screen.fill((255, 255, 255))
 
 #design variables
@@ -21,11 +22,11 @@ running = True
 cramperBrought = {
     "granny" : 0,
 } #amount of bots bought key is the diffrent bots availbile and values are the amount bought
-cookieCounterG=0                                                      
+cookieCounterG = 0
 while running:
 
     #game shapes and colliders
-    granny = pygame.Rect(200,900,700,900)
+    granny = pygame.Rect(600,600,100,100)
 
 
     scorep = "Cookies = " + str(score) 
@@ -48,12 +49,17 @@ while running:
             if(msx<500 and msx>300 and msy>300 and msy<500):#circle hitbox?
                 score += 1
             if(score>10 and granny.collidepoint(msx,msy)):                                            
-                cramperBrought["granny"] += cramperBrought.get("granny") + 1
+                cramperBrought["granny"] += 1
                 score -= 5
                 start_time = time.time()
-                cookieCounterG = time.time()-start_time * cramperBrought["granny"]
+    
+    cookiecounttemp = cookieCounterG
     if (cramperBrought.get("granny")!=0):
-        score = score + cookieCounterG
+        #print(time.time()-start_time,cramperBrought["granny"])
+        cookieCounterG = math.floor(time.time()-start_time) * cramperBrought["granny"]
+        print(cookieCounterG)
+        if(cookieCounterG>cookiecounttemp):
+            score += cramperBrought["granny"]
     #drawing
     pygame.draw.circle(screen, (0,0,100), (400, 400), 100, 100)
     screen.blit(ScoreText,(10,10))#displays text
